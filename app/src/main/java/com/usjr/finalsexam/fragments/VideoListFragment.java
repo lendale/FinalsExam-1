@@ -56,8 +56,13 @@ public class VideoListFragment extends Fragment implements AdapterView.OnItemCli
         View view = inflater.inflate(R.layout.fragment_video_list, container, false);
         ListView listView = (ListView) view.findViewById(R.id.listView);
 
-        mAdapter = new VideoListAdapter(getContext(), new ArrayList<Video>());
+        mAdapter = new VideoListAdapter(
+                getContext(),
+                android.R.layout.simple_list_item_1,
+                new ArrayList<Video>());
         listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(this);
 
         return view;
     }
