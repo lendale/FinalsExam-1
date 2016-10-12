@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,13 +15,16 @@ import com.usjr.finalsexam.entity.Video;
 
 import java.util.List;
 
-public class VideoListAdapter extends BaseAdapter {
+public class VideoListAdapter extends ArrayAdapter<Video> {
 
     private Context     mContext;
+    private int         mLayoudId;
     private List<Video> mVideos;
 
-    public VideoListAdapter(Context context, List<Video> videos) {
+    public VideoListAdapter(Context context, int resource, List<Video> videos) {
+        super(context, resource);
         mContext = context;
+        mLayoudId = resource;
         mVideos = videos;
     }
 
@@ -44,8 +48,9 @@ public class VideoListAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_video, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(mLayoudId, parent, false);
             holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -54,6 +59,9 @@ public class VideoListAdapter extends BaseAdapter {
         if (video != null) {
             if (holder.imgThumbnail != null) {
                 Glide.with(mContext).load(video.thumbnailUrl).into(holder.imgThumbnail);
+            }
+            if (holder.tvTitle != null) {
+                holder.tvTitle.setText(video.title);
             }
         }
 
@@ -73,6 +81,7 @@ public class VideoListAdapter extends BaseAdapter {
         TextView  tvTitle;
 
         public ViewHolder(View itemView) {
+            imgThumbnail = (ImageView) itemView.findViewById(R.id.imgThumbnail);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
         }
     }
